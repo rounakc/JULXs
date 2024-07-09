@@ -305,7 +305,7 @@ function ProductInfo() {
             </h1>
             <div className="flex justify-between mt-2">
               <span>Price</span>
-              <span>$ {product.price}</span>
+              <span>₹ {product.price}</span>
             </div>
             <div className="flex justify-between mt-2">
               <span>Category</span>
