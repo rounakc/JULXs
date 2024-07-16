@@ -6,6 +6,7 @@ import { message ,Button} from "antd";
 import Divider from "../../components/Divider";
 import { useNavigate } from "react-router-dom";
 import Filters from "./Filters";
+import Search from "./Search";
 import moment from "moment";
 
 function Home() {
@@ -16,6 +17,7 @@ function Home() {
     category: [],
     age: [],
   });
+  const [error, setError]=React.useState(false);
   const [selectedProduct, setSelectedProduct] = React.useState(null);
   const [showProductForm, setShowProductForm] = React.useState(false);
   const navigate = useNavigate();
@@ -57,11 +59,12 @@ function Home() {
               onClick={() => setShowFilters(!showFilters)}
             ></i>
           )}
-          <input
+          <Search  setproducts={setProducts} reloadData={getData} setError={setError} />
+          {/* <input
             type="text"
             placeholder="Search Products  here..."
             className="border border-gray-300 rounded border-solid px-2 py-1 h-14 w-full"
-          />
+          /> */}
         </div>
         {/* <div className="flex justify-end mb-2">
         <Button

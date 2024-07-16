@@ -51,6 +51,17 @@ export const GetProductById = async (id) => {
   }
 };
 
+export const GetProductsBysearch = async (value)=>{
+  try {
+      const response = await axiosInstance.get(
+        `/api/products/search/${value}`
+      );
+      console.log("I am at GetProductsBySearch API");
+      return response.data;
+  } catch (error) {
+      return error.message;
+  }
+}
 // delete a product
 export const DeleteProduct = async (id) => {
   try {

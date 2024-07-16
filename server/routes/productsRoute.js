@@ -132,6 +132,28 @@ const storage = multer.diskStorage({
   },
 });
 
+
+// get products by search
+router.get('/search/:key',async(req,res)=>{
+  try {
+       const response=await Product.find({
+          '$or':[
+              {name:{$regex:req.params.key}},
+          ]
+       });
+       res.send({
+          success:true,
+          data:response,
+      })
+  } catch (error) {
+      res.send({
+          success:false,
+          message:error.message,
+      })
+  }
+})
+
+
 router.post(
   "/upload-image-to-product",
   authMiddleware,
