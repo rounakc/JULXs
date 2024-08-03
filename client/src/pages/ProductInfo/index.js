@@ -209,16 +209,17 @@ import Divider from "../../components/Divider";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import BidModal from "./BidModal";
-
+import ProductInfoShimmer from "./ProductInfoShimmer";
 function ProductInfo() {
   const { user } = useSelector((state) => state.users);
   const [showAddNewBid, setShowAddNewBid] = React.useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
+  const [localLoading, setLocalLoading] = React.useState(true);
   const [product, setProduct] = React.useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-
+  const { loading } = useSelector((state) => state.loaders);
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
@@ -241,10 +242,22 @@ function ProductInfo() {
     getData();
   }, [id]);
 
-  if (!product) {
-    return <div>Loading...</div>;
-  }
 
+  
+  React.useEffect(() => {
+    // Simulate loading for 3 seconds
+    const timer = setTimeout(() => {
+      setLocalLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // if (!product) {
+  //   return <div>Loading...</div>;
+  // }
+  if (loading || localLoading || !product) {
+    return <ProductInfoShimmer />;
+  }
   return (
     <div>
       <div className="grid grid-cols-2 gap-5 mt-5">

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect ,useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { GetProducts } from "../../apicalls/products";
 import { SetLoader } from "../../redux/loadersSlice";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Filters from "./Filters";
 import Search from "./Search";
 import moment from "moment";
+import HomeShimmer from "./HomeShimmer";
 
 function Home() {
   const [showFilters, setShowFilters] = React.useState(true);
@@ -20,9 +21,11 @@ function Home() {
   const [error, setError]=React.useState(false);
   const [selectedProduct, setSelectedProduct] = React.useState(null);
   const [showProductForm, setShowProductForm] = React.useState(false);
+  const [localLoading, setLocalLoading] = React.useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.users);
+  const { loading } = useSelector((state) => state.loaders);
   const getData = async () => {
     try {
       dispatch(SetLoader(true));
@@ -41,6 +44,18 @@ function Home() {
     getData();
   }, [filters]);
 
+
+  useEffect(() => {
+    // Simulate loading for 3 seconds
+    const timer = setTimeout(() => {
+      setLocalLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading || localLoading) {
+    return <HomeShimmer />;
+  }
   return (
     <div className="flex gap-5">
       {showFilters && (

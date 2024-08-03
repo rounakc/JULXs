@@ -3,8 +3,9 @@ import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Divider from "../../components/Divider";
 import { LoginUser } from "../../apicalls/users";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector  } from "react-redux";
 import { SetLoader } from "../../redux/loadersSlice";
+import LoginShimmer from "./LoginShimmer";
 
 const rules = [
   {
@@ -13,6 +14,8 @@ const rules = [
   },
 ];
 function Login() {
+  //const { loading } = useSelector((state) => state.loaders);
+  const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onFinish = async (values) => {
@@ -38,6 +41,17 @@ function Login() {
       navigate("/");
     }
   }, []);
+
+  useEffect(() => {
+    // Simulate loading for 3 seconds
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+  if (loading) {
+    return <LoginShimmer />;
+  }
   return (
     <div className="h-screen bg-primary flex justify-center items-center">
       <div className="bg-white p-5 rounded w-[450px]">

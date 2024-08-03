@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect} from "react";
 import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import Divider from "../../components/Divider";
 import { RegisterUser } from "../../apicalls/users";
 import { SetLoader } from "../../redux/loadersSlice";
-import { useDispatch } from "react-redux";
-
+import { useDispatch,useSelector } from "react-redux";
+import RegisterShimmer from "./RegisterShimmer";
 const rules = [
   {
     required: true,
@@ -15,6 +15,8 @@ const rules = [
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.loaders);
+  const [localLoading, setLocalLoading] = React.useState(true);
   const onFinish = async (values) => {
     try {
       console.log(values);
@@ -39,6 +41,17 @@ function Register() {
     }
   }, []);
 
+  useEffect(() => {
+    // Simulate loading for 3 seconds
+    const timer = setTimeout(() => {
+      setLocalLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading || localLoading) {
+    return <RegisterShimmer />;
+  }
   return (
     <div className="h-screen bg-primary flex justify-center items-center">
       <div className="bg-white p-5 rounded w-[450px]">
