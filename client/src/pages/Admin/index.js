@@ -8,18 +8,25 @@ import AdminShimmer from "./AdminShimmer";
 function Admin() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.users);
-  const [localLoading, setLocalLoading] = useState(true);
+  const [localLoading, setLocalLoading] = useState(false);
+  // eslint-disable-next-line
+
   useEffect(() => {
-    if (user.role !== "admin") {
+    if (!user || user.role !== "admin") {
       navigate("/");
-    } else {
-      // Simulate loading for 3 seconds
-      const timer = setTimeout(() => {
-        setLocalLoading(false);
-      }, 3000);
-      return () => clearTimeout(timer);
     }
   }, []);
+  // useEffect(() => {
+  //   if (!user || user.role !== "admin") {
+  //     navigate("/");
+  //   } else {
+  //     // Simulate loading for 3 seconds
+  //     const timer = setTimeout(() => {
+  //       setLocalLoading(false);
+  //     }, 3000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [user, navigate]);
   if (localLoading) {
     return <AdminShimmer />;
   }
